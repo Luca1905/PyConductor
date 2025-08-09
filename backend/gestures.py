@@ -7,7 +7,6 @@ from mediapipe.tasks.python import vision
 cap = cv2.VideoCapture(0)
 
 images = []
-results = []
 
 # STEP 2: Create an GestureRecognizer object.
 base_options = python.BaseOptions(model_asset_path='gesture_recognizer.task')
@@ -32,10 +31,13 @@ while True:
 
     images.append(mp_image)
     if (len(recognition_result.gestures) > 0):
-        top_gesture = recognition_result.gestures[0]
-        hand_landmarks = recognition_result.hand_landmarks
-        results.append((top_gesture, hand_landmarks))
-        gesture = (top_gesture[0].category_name)
+        gesture = recognition_result.gestures[0][0].category_name
+        hand = recognition_result.handedness[0][0].category_name
+        if hand == "Right":
+            hand = "Left"
+        else:
+            hand = "Right"
+        print(gesture, hand)
 
     # Display Video and when 'q' is entered,
     # destroy the window
