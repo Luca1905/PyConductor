@@ -5,6 +5,9 @@ from collections import deque
 import numpy as np
 import cv2
 from gestures import detectGesture
+import eventlet
+eventlet.monkey_patch()
+
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
@@ -41,4 +44,4 @@ def process_latest_frame():
             print("Error decoding frame")
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    socketio.run(app, host='0.0.0.0', port=10000)
