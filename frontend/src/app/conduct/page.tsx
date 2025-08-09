@@ -4,6 +4,7 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import Webcam from "react-webcam";
 import { socket } from "../../socket-io/socket";
 import { sendFrame } from "@/socket-io/event-emitters";
+import { CirclePause, Play } from "lucide-react";
 
 const videoConstraints = {
   width: 640,
@@ -89,9 +90,13 @@ export default function Conduct() {
         />
 
         {capturing ? (
-          <button onClick={handleStopCapture}>Stop Streaming</button>
+          <button onClick={handleStopCapture}>
+            <CirclePause />
+          </button>
         ) : (
-          <button onClick={handleStartCaptureClick}>Start Capture</button>
+          <button onClick={handleStartCaptureClick}>
+            <Play />
+          </button>
         )}
 
         {frames.length > 0 && (
