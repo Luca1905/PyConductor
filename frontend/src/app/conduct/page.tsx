@@ -37,6 +37,31 @@ export default function Conduct() {
     stopG();
   };
 
+  const soundTimeouts = useRef<Record<string, NodeJS.Timeout | null>>({});
+
+  const playWithTimeout = (
+    playFn: () => void,
+    stopFn: () => void,
+    key: string,
+  ) => {
+    // Stop all sounds before playing a new one
+    stopAll();
+
+    // Clear any existing timeout for this sound
+    if (soundTimeouts.current[key]) {
+      clearTimeout(soundTimeouts.current[key]);
+    }
+
+    // Play the sound
+    playFn();
+
+    // Set a timeout to stop it after 7 seconds
+    soundTimeouts.current[key] = setTimeout(() => {
+      stopFn();
+      soundTimeouts.current[key] = null;
+    }, 7000);
+  };
+
   const handleActionUpdate = useCallback(
     (payload: HandWithAction) => {
       stopAll();
@@ -94,7 +119,23 @@ export default function Conduct() {
           stopAll();
       }
     },
-    [playA, playB, playC, playD, playE, playF, playG],
+    [
+      playA,
+      stopA,
+      playB,
+      stopB,
+      playC,
+      stopC,
+      playD,
+      stopD,
+      playE,
+      stopE,
+      playF,
+      stopF,
+      playG,
+      stopG,
+      playWithTimeout,
+    ],
   );
 
   useEffect(() => {
