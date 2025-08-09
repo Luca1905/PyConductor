@@ -3,22 +3,14 @@ import mediapipe as mp
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 
-# Start capturing video from webcam
-cap = cv2.VideoCapture(0)
-
 images = []
 
-# STEP 2: Create an GestureRecognizer object.
-base_options = python.BaseOptions(model_asset_path='gesture_recognizer.task')
-options = vision.GestureRecognizerOptions(base_options=base_options)
-recognizer = vision.GestureRecognizer.create_from_options(options)
+def detectGesture(frame):
 
-while True:
-    # Read video frame by frame
-    _,frame = cap.read()
-    
-    #Flip image 
-    frame=cv2.flip(frame,1)
+    # Create an GestureRecognizer object.
+    base_options = python.BaseOptions(model_asset_path='gesture_recognizer.task')
+    options = vision.GestureRecognizerOptions(base_options=base_options)
+    recognizer = vision.GestureRecognizer.create_from_options(options)
     
     # Convert BGR image to RGB image
     frameRGB = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
@@ -37,10 +29,4 @@ while True:
             hand = "Left"
         else:
             hand = "Right"
-        print(gesture, hand)
-
-    # Display Video and when 'q' is entered,
-    # destroy the window
-    cv2.imshow('Image', frame)
-    if cv2.waitKey(1) & 0xff == ord('q'):
-        break
+        print(f'{hand}:{gesture}')
