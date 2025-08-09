@@ -6,11 +6,14 @@ import numpy as np
 import cv2
 from gestures import detectGesture
 import eventlet
+import os
+
+
 eventlet.monkey_patch()
 
-
 app = Flask(__name__)
-socketio = SocketIO(app,cors_allowed_origins="*")
+socketio = SocketIO(app,cors_allowed_origins="*", async_mode='eventlet')
+
 
 # Store only the last 10 frames
 frame_buffer = deque(maxlen=10)
@@ -43,5 +46,8 @@ def process_latest_frame():
         else:
             print("Error decoding frame")
 
+
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=10000)
+    port = int(os.environ.get("PORT", 5000))  # default to 5000 if PORT isn't set
+    socketio.run(app, host="0.0.0.0", port=port)
+
