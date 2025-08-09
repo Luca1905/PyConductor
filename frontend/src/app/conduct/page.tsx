@@ -30,7 +30,7 @@ export default function Conduct() {
     };
   }, []);
 
-  const handleActionUpdate = useCallback((payload) => {
+  const handleActionUpdate = useCallback((payload: string) => {
     console.log(payload);
   }, []);
 
