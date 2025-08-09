@@ -1,37 +1,27 @@
 import Link from "next/link";
+import { Hand } from "lucide-react";
 
-export default function HomePage() {
+export default function Page() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-        <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-          Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
-        </h1>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-            href="https://create.t3.gg/en/usage/first-steps"
-            target="_blank"
-          >
-            <h3 className="text-2xl font-bold">First Steps →</h3>
-            <div className="text-lg">
-              Just the basics - Everything you need to know to set up your
-              database and authentication.
-            </div>
-          </Link>
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-            href="https://create.t3.gg/en/introduction"
-            target="_blank"
-          >
-            <h3 className="text-2xl font-bold">Documentation →</h3>
-            <div className="text-lg">
-              Learn more about Create T3 App, the libraries it uses, and how to
-              deploy it.
-            </div>
-          </Link>
-        </div>
+    <main className="relative min-h-[100dvh] overflow-hidden bg-black">
+      <div className="absolute inset-0 -z-10">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(168,85,247,0.18),rgba(0,0,0,0.6))]" />
       </div>
+
+      <section
+        id="main"
+        className="relative z-10 grid min-h-[100dvh] place-items-center px-6"
+      >
+        <Link href="/conduct" className="relative">
+          <div className="relative grid h-44 w-44 place-items-center rounded-full bg-gradient-to-br from-fuchsia-500 to-emerald-500 p-[3px] shadow-[0_0_60px_-10px_rgba(217,70,239,0.45)] transition-transform hover:scale-105 focus-visible:ring-2 focus-visible:ring-fuchsia-400 focus-visible:outline-none md:h-56 md:w-56">
+            <div className="relative grid h-full w-full place-items-center rounded-full bg-black">
+              <div className="absolute inset-0 animate-[pulse_2.4s_ease-in-out_infinite] rounded-full ring-1 ring-fuchsia-500/30" />
+              <div className="absolute inset-0 animate-[spin_9s_linear_infinite] rounded-full bg-[conic-gradient(from_0deg,transparent_0deg,rgba(34,197,94,0.18)_120deg,transparent_240deg)]" />
+              <Hand className="relative h-16 w-16 text-white md:h-20 md:w-20" />
+            </div>
+          </div>
+        </Link>
+      </section>
     </main>
   );
 }
