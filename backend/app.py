@@ -6,13 +6,14 @@ import cv2
 from gestures import detectGesture
 
 app = Flask(__name__)
-socketio = SocketIO(app)
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 # Store only the last 10 frames
 frame_buffer = deque(maxlen=10)
 
 @socketio.on('frame:update')
 def handle_blob(data):
+    print(data)
     # Add frame to buffer (stored in memory, not saved to disk)
     frame_buffer.append(data)
     # convert the frame data to image and send to opencv
