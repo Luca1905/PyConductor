@@ -99,7 +99,7 @@ This app can be deployed on cloud platforms like Render with simple commands:
 
 ## Contributing
 
-Co-creator: [@garghg](https://github.com/garghg)
+Co-creator: [@garghg](https://github.com/garghg)  
 Contributions are welcome! Feel free to open issues or submit pull requests to improve features, add support, or fix bugs.
 
 ---
