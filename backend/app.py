@@ -10,7 +10,7 @@ eventlet.monkey_patch()
 
 
 app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app,cors_allowed_origins="*")
 
 # Store only the last 10 frames
 frame_buffer = deque(maxlen=10)
@@ -39,7 +39,7 @@ def process_latest_frame():
         img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
 
         if img is not None:
-            detectGesture(img, lambda gesture: emit(gesture))
+            detectGesture(img, lambda gesture: emit("action:update",gesture))
         else:
             print("Error decoding frame")
 
