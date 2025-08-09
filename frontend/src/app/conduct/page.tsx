@@ -3,12 +3,13 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import Webcam from "react-webcam";
 import { socket } from "../../socket-io/socket";
+import { sendFrame } from "@/socket-io/event-emitters";
 
 const videoConstraints = {
-  width: 1280,
-  height: 720,
+  width: 640,
+  height: 360,
   facingMode: "user",
-};
+} as const;
 
 export default function Conduct() {
   const webcamRef = useRef(null);
@@ -44,6 +45,7 @@ export default function Conduct() {
 
       // Example: process the frame here
       console.log("Captured frame:", imageSrc.substring(0, 50) + "...");
+      sendFrame(imageSrc);
     }
   }, []);
 
@@ -51,7 +53,7 @@ export default function Conduct() {
   const handleStartCaptureClick = useCallback(() => {
     setCapturing(true);
     setFrames([]);
-    captureIntervalRef.current = setInterval(captureFrame, 1000 / 30); // 30 FPS
+    captureIntervalRef.current = setInterval(captureFrame, 1000 / 10); // 30 FPS
   }, [captureFrame]);
 
   // Stop capturing frames
