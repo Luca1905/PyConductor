@@ -2,7 +2,6 @@ import cv2
 import mediapipe as mp
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
-from flask_socketio import emit
 
 images = []
 
@@ -11,7 +10,8 @@ base_options = python.BaseOptions(model_asset_path='gesture_recognizer.task')
 options = vision.GestureRecognizerOptions(base_options=base_options)
 recognizer = vision.GestureRecognizer.create_from_options(options)
 
-def detectGesture(frame):
+
+def detectGesture(frame, onDetect):
     
     # Convert BGR image to RGB image
     frameRGB = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
@@ -30,4 +30,4 @@ def detectGesture(frame):
             hand = "Left"
         else:
             hand = "Right"
-        emit(f'{hand}:{gesture}')
+        onDetect(f'{hand}:{gesture}')

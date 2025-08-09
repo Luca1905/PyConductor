@@ -1,6 +1,6 @@
 import base64
 from flask import Flask
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, emit
 from collections import deque
 import numpy as np
 import cv2
@@ -36,7 +36,7 @@ def process_latest_frame():
         img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
 
         if img is not None:
-            detectGesture(img)
+            detectGesture(img, lambda gesture: emit(gesture))
         else:
             print("Error decoding frame")
 
