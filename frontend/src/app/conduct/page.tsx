@@ -87,7 +87,7 @@ export default function Conduct() {
         />
 
         {capturing ? (
-          <button onClick={handleStopCapture}>Stop Capture</button>
+          <button onClick={handleStopCapture}>Stop Streaming</button>
         ) : (
           <button onClick={handleStartCaptureClick}>Start Capture</button>
         )}
