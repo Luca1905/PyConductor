@@ -11,7 +11,7 @@ type Action =
   | "Victory"
   | "ILoveYou";
 
-type HandWithAction = `${Hand}:${Action}`;
+export type HandWithAction = `${Hand}:${Action}`;
 
 interface ServerEvents {
   "action:update": (payload: HandWithAction) => void;

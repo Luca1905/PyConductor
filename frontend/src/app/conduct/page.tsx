@@ -2,10 +2,11 @@
 
 import { useState, useRef, useCallback, useEffect } from "react";
 import Webcam from "react-webcam";
-import { socket } from "../../socket-io/socket";
+import { socket } from "@/socket-io/socket";
 import { sendFrame } from "@/socket-io/event-emitters";
 import { CirclePause, Play } from "lucide-react";
-
+import useSound from "use-sound";
+import type { HandWithAction } from "@/socket-io/socket";
 const videoConstraints = {
   width: 640,
   height: 360,
@@ -13,14 +14,88 @@ const videoConstraints = {
 } as const;
 
 export default function Conduct() {
+  const [playA, { stop: stopA }] = useSound("/A.mp3");
+  const [playB, { stop: stopB }] = useSound("/B.mp3");
+  const [playC, { stop: stopC }] = useSound("/C.mp3");
+  const [playD, { stop: stopD }] = useSound("/D.mp3");
+  const [playE, { stop: stopE }] = useSound("/E.mp3");
+  const [playF, { stop: stopF }] = useSound("/F.mp3");
+  const [playG, { stop: stopG }] = useSound("/G.mp3");
+
   const webcamRef = useRef<Webcam | null>(null);
   const [capturing, setCapturing] = useState<boolean>(false);
   const [frames, setFrames] = useState<string[]>([]);
   const captureIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handleActionUpdate = useCallback((payload: string) => {
-    console.log(payload);
-  }, []);
+  const stopAll = () => {
+    stopA();
+    stopB();
+    stopC();
+    stopD();
+    stopE();
+    stopF();
+    stopG();
+  };
+
+  const handleActionUpdate = useCallback(
+    (payload: HandWithAction) => {
+      stopAll();
+      console.log(payload);
+
+      switch (payload) {
+        // LEFT HAND
+        case "Left:None":
+          playA();
+          break;
+        case "Left:ILoveYou":
+          playB();
+          break;
+        case "Left:Open_Palm":
+          playC();
+          break;
+        case "Left:Pointing_Up":
+          playD();
+          break;
+        case "Left:Thumb_Down":
+          playE();
+          break;
+        case "Left:Thumb_Up":
+          playF();
+          break;
+        case "Left:Victory":
+          playG();
+          break;
+
+        // RIGHT HAND
+        case "Right:None":
+          playA();
+          break;
+        case "Right:ILoveYou":
+          playB();
+          break;
+        case "Right:Open_Palm":
+          playC();
+          break;
+        case "Right:Pointing_Up":
+          playD();
+          break;
+        case "Right:Thumb_Down":
+          playE();
+          break;
+        case "Right:Thumb_Up":
+          playF();
+          break;
+        case "Right:Victory":
+          playG();
+          break;
+        case "Right:Closed_Fist":
+        case "Left:Closed_Fist":
+        default:
+          stopAll();
+      }
+    },
+    [playA, playB, playC, playD, playE, playF, playG],
+  );
 
   useEffect(() => {
     socket.on("action:update", handleActionUpdate);
@@ -36,27 +111,23 @@ export default function Conduct() {
     };
   }, [handleActionUpdate]);
 
-  // Function to capture a single frame
   const captureFrame = useCallback(() => {
     if (!webcamRef.current) return;
 
-    const imageSrc = webcamRef.current.getScreenshot(); // base64 image
+    const imageSrc = webcamRef.current.getScreenshot();
     if (imageSrc) {
       setFrames((prev) => [...prev, imageSrc]);
-
       console.log("Captured frame:", imageSrc.substring(0, 50) + "...");
       sendFrame(imageSrc);
     }
   }, []);
 
-  // Start capturing frames
   const handleStartCaptureClick = useCallback(() => {
     setCapturing(true);
     setFrames([]);
-    captureIntervalRef.current = setInterval(captureFrame, 1000 / 10); // 10 FPS
+    captureIntervalRef.current = setInterval(captureFrame, 1000 / 10);
   }, [captureFrame]);
 
-  // Stop capturing frames
   const handleStopCapture = useCallback(() => {
     setCapturing(false);
     if (captureIntervalRef.current) {
@@ -65,7 +136,6 @@ export default function Conduct() {
     }
   }, []);
 
-  // Download all frames as images
   const handleDownloadFrames = useCallback(() => {
     frames.forEach((frame, index) => {
       const a = document.createElement("a");
