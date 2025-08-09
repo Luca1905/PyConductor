@@ -36,7 +36,7 @@ def process_latest_frame():
         img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
 
         if img is not None:
-            detectGesture(img, lambda gesture: emit(gesture))
+            detectGesture(img, lambda gesture: emit("action:update",gesture))
         else:
             print("Error decoding frame")
 
