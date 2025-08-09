@@ -2,6 +2,7 @@ import cv2
 import mediapipe as mp
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
+from flask_socketio import emit
 
 images = []
 
@@ -29,4 +30,4 @@ def detectGesture(frame):
             hand = "Left"
         else:
             hand = "Right"
-        print(f'{hand}:{gesture}')
+        emit(f'{hand}:{gesture}')
