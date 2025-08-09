@@ -13,6 +13,3 @@ dependencies = [
     "numpy>=2.2.6",
     "opencv-python>=4.11.0.86",
 ]
-
-[project.scripts]
-start = "wsgi:app"

@@ -2,7 +2,7 @@ services:
   - type: web
     name: gesture-backend
     env: python
-    buildCommand: uv pip install
+    buildCommand: uv install
     startCommand: python wsgi.py
     envVars:
       - key: PORT
