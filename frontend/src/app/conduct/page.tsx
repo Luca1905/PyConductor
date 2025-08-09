@@ -12,10 +12,14 @@ const videoConstraints = {
 } as const;
 
 export default function Conduct() {
-  const webcamRef = useRef(null);
-  const [capturing, setCapturing] = useState(false);
-  const [frames, setFrames] = useState([]);
-  const captureIntervalRef = useRef(null);
+  const webcamRef = useRef<Webcam | null>(null);
+  const [capturing, setCapturing] = useState<boolean>(false);
+  const [frames, setFrames] = useState<string[]>([]);
+  const captureIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleActionUpdate = useCallback((payload: string) => {
+    console.log(payload);
+  }, []);
 
   useEffect(() => {
     socket.on("action:update", handleActionUpdate);
@@ -29,11 +33,7 @@ export default function Conduct() {
     return () => {
       socket.off("action:update", handleActionUpdate);
     };
-  }, []);
-
-  const handleActionUpdate = useCallback((payload: string) => {
-    console.log(payload);
-  }, []);
+  }, [handleActionUpdate]);
 
   // Function to capture a single frame
   const captureFrame = useCallback(() => {
@@ -43,7 +43,6 @@ export default function Conduct() {
     if (imageSrc) {
       setFrames((prev) => [...prev, imageSrc]);
 
-      // Example: process the frame here
       console.log("Captured frame:", imageSrc.substring(0, 50) + "...");
       sendFrame(imageSrc);
     }
@@ -53,13 +52,16 @@ export default function Conduct() {
   const handleStartCaptureClick = useCallback(() => {
     setCapturing(true);
     setFrames([]);
-    captureIntervalRef.current = setInterval(captureFrame, 1000 / 10); // 30 FPS
+    captureIntervalRef.current = setInterval(captureFrame, 1000 / 10); // 10 FPS
   }, [captureFrame]);
 
   // Stop capturing frames
   const handleStopCapture = useCallback(() => {
     setCapturing(false);
-    clearInterval(captureIntervalRef.current);
+    if (captureIntervalRef.current) {
+      clearInterval(captureIntervalRef.current);
+      captureIntervalRef.current = null;
+    }
   }, []);
 
   // Download all frames as images

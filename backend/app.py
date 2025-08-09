@@ -7,7 +7,7 @@ import cv2
 from gestures import detectGesture
 
 app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app,cors_allowed_origins="*")
 
 # Store only the last 10 frames
 frame_buffer = deque(maxlen=10)
