@@ -1,3 +1,7 @@
+import eventlet
+eventlet.monkey_patch()
+
+
 import base64
 from flask import Flask
 from flask_socketio import SocketIO, emit
@@ -5,11 +9,9 @@ from collections import deque
 import numpy as np
 import cv2
 from gestures import detectGesture
-import eventlet
 import os
 
 
-eventlet.monkey_patch()
 
 app = Flask(__name__)
 socketio = SocketIO(app,cors_allowed_origins="*", async_mode='eventlet')
@@ -45,8 +47,3 @@ def process_latest_frame():
             detectGesture(img, lambda gesture: emit("action:update",gesture))
         else:
             print("Error decoding frame")
-
-
-if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))  # default to 5000 if PORT isn't set
-    socketio.run(app, host="0.0.0.0", port=port)

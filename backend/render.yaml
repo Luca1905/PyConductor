@@ -3,7 +3,7 @@ services:
     name: gesture-backend
     env: python
     buildCommand: uv pip install
-    startCommand: gunicorn -k eventlet -w 1 app:app --bind 0.0.0.0:$PORT
+    startCommand: python wsgi.py
     envVars:
       - key: PORT
         value: 5000
