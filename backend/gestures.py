@@ -6,12 +6,12 @@ from flask_socketio import emit
 
 images = []
 
-def detectGesture(frame):
+# Create an GestureRecognizer object.
+base_options = python.BaseOptions(model_asset_path='gesture_recognizer.task')
+options = vision.GestureRecognizerOptions(base_options=base_options)
+recognizer = vision.GestureRecognizer.create_from_options(options)
 
-    # Create an GestureRecognizer object.
-    base_options = python.BaseOptions(model_asset_path='gesture_recognizer.task')
-    options = vision.GestureRecognizerOptions(base_options=base_options)
-    recognizer = vision.GestureRecognizer.create_from_options(options)
+def detectGesture(frame):
     
     # Convert BGR image to RGB image
     frameRGB = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)

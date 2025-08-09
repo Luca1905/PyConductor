@@ -14,14 +14,13 @@ type Action =
 type HandWithAction = `${Hand}:${Action}`;
 
 interface ServerEvents {
-  "action:update": (payload: string) => void;
+  "action:update": (payload: HandWithAction) => void;
 }
 
 interface ClientEvents {
   "frame:update": (payload: string) => void;
 }
 
-const URL = process.env.BACKEND_URL;
-
-console.log(URL);
-export const socket: Socket<ServerEvents, ClientEvents> = io(URL);
+export const socket: Socket<ServerEvents, ClientEvents> = io(
+  "http://127.0.0.1:5000",
+);
