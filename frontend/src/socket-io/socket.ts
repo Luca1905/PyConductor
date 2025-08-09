@@ -22,5 +22,6 @@ interface ClientEvents {
 }
 
 export const socket: Socket<ServerEvents, ClientEvents> = io(
-  process.env.BACKEND_URL,
+  process.env.BACKEND_URL ?? "https://pyconductor.onrender.com:5000",
+  { port: 5000 },
 );
