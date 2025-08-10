@@ -209,10 +209,6 @@ export default function Conduct() {
             <Play />
           </button>
         )}
-
-        {frames.length > 0 && (
-          <button onClick={handleDownloadFrames}>Download Frames</button>
-        )}
       </section>
     </main>
   );
